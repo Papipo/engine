@@ -9,16 +9,16 @@ module Locomotive
       def call(env)
         status, headers, response = @app.call(env)
 
-        response = modify(response) unless headers['Editable'].blank?
+        response = modify(response, Rack::Request.new(env).path) unless headers['Editable'].blank?
 
         [status, headers, response]
       end
 
-      def modify(response)
+      def modify(response, path)
         [].tap do |parts|
           response.each do |part|
             parts << part.to_s.gsub('</body>', %(
-             <a  href="#{File.join(response.request.path, '/_admin')}"
+             <a  href="#{File.join(path, '/_admin')}"
                  onmouseout="this.style.backgroundPosition='0px 0px'"
                  onmouseover="this.style.backgroundPosition='0px -45px'"
                  onmousedown="this.style.backgroundPosition='0px -90px'"
@@ -30,6 +30,8 @@ module Locomotive
           end
         end
       end
+      
+      
 
     end
   end

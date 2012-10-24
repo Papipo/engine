@@ -8,6 +8,7 @@ require 'active_resource/railtie'
 # Bundler.require
 Bundler.require(*Rails.groups(:assets => %w(development test)))
 require 'locomotive/engine'
+require File.join(File.dirname(__FILE__), '..', 'lib', 'my_engine', 'lib', 'my_engine')
 
 module Dummy
   class Application < Rails::Application
