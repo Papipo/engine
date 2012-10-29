@@ -7,7 +7,7 @@ Background:
   Given I have the site: "test site" set up
 
 Scenario: Simple Page
-  Given a page named "hello-world" with the template:
+  Given a page named "Hello world" with the template:
     """
     Hello World
     """

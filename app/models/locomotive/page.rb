@@ -12,6 +12,8 @@ module Locomotive
     include Extensions::Page::Redirect
     include Extensions::Page::Listed
     include Extensions::Shared::Seo
+    require 'activesearch/mongoid' # TODO Make this configurable and load accordingly
+    include ActiveSearch::Mongoid
 
     ## fields ##
     field :title,               :localize => true
@@ -54,7 +56,10 @@ module Locomotive
     scope :handle,              lambda { |handle| { :where => { :handle => handle } } }
     scope :minimal_attributes,  lambda { |attrs = []| { :only => (attrs || []) + %w(title slug fullpath position depth published templatized redirect listed response_type parent_id parent_ids site_id created_at updated_at) } }
     scope :dependent_from,      lambda { |id| { :where => { :template_dependencies.in => [id] } } }
-
+    
+    ## search ##
+    search_on :title, store: [:title, :slug, :site_id]
+    
     ## methods ##
 
     def index?

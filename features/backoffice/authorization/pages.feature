@@ -10,7 +10,7 @@ Feature: Pages
       | Name        | string    | true            |
       | Description | text      | false           |
     And I have a designer and an author
-    And a page named "hello-world" with the template:
+    And a page named "Hello world" with the template:
     """
     Hello World
     """
@@ -72,7 +72,7 @@ Feature: Pages
   Scenario: Accessing edit page as an Admin
     Given I am an authenticated "admin"
     When I go to the "hello-world" edition page
-    Then I should see "some title"
+    Then I should see "Hello world"
     And I should see "General information"
     And I should see "SEO settings"
     And I should see "Advanced options"
@@ -81,7 +81,7 @@ Feature: Pages
   Scenario: Accessing edit page as a Designer
     Given I am an authenticated "designer"
     When I go to the "hello-world" edition page
-    Then I should see "some title"
+    Then I should see "Hello world"
     And I should see "General information"
     And I should see "SEO settings"
     And I should see "Advanced options"
@@ -90,7 +90,7 @@ Feature: Pages
   Scenario: Accessing edit page as an Author
     Given I am an authenticated "author"
     When I go to the "hello-world" edition page
-    Then I should see "some title"
+    Then I should see "Hello world"
     And I should not see "General Information"
     And I should see "SEO settings"
     And I should not see "Advanced options"

@@ -1,23 +1,34 @@
 ### Pages
 
 # helps create a simple content page (parent: "index") with a slug, contents, and template
-def create_content_page(page_slug, page_contents, template = nil)
-  page = new_content_page(page_slug, page_contents, template)
+def create_content_page(page_slug, page_contents, template = nil, site = nil)
+  page = new_content_page(page_slug, page_contents, template, site)
   page.should be_valid
   page.save!
   page
 end
 
 # build page without saving
-def new_content_page(page_slug, page_contents, template = nil)
-  @home = @site.pages.where(:slug => "index").first || FactoryGirl.create(:page)
-  page = @site.pages.new(:slug => page_slug, :body => page_contents, :parent => @home, :title => "some title", :published => true, :raw_template => template)
+def new_content_page(page_slug, page_contents, template = nil, site = nil)
+  site ||= @site
+  home = site.pages.where(:slug => "index").first || FactoryGirl.create(:page, site: site)
+  page = site.pages.new(:slug => page_slug, :body => page_contents, :parent => home, :title => page_slug.dup, :published => true, :raw_template => template)
   page
 end
 
 # creates a page
 Given /^a simple page named "([^"]*)" with the body:$/ do |page_slug, page_contents|
   @page = create_content_page(page_slug, page_contents)
+end
+
+Given /^a page named "(.*?)" in the site "(.*?)" with the body:$/ do |page_slug, site, body|
+  site = Locomotive::Site.where(:name => site).first
+  @page = create_content_page(page_slug, body, nil, site)
+end
+
+Given /^a page named "(.*?)" in the site "(.*?)" with the template:$/ do |page_slug, site, template|
+  site = Locomotive::Site.where(:name => site).first
+  @page = create_content_page(page_slug, nil, template, site)
 end
 
 Given /^a page named "([^"]*)" with the template:$/ do |page_slug, template|

@@ -12,6 +12,10 @@ module Locomotive
         def pages
           @pages ||= liquify(*self._source.pages)
         end
+        
+        def search
+          @search ||= ActiveSearch.search(@context.registers[:controller].params[:search]).where('stored.site_id' => _source.id)
+        end
 
       end
     end
