@@ -65,5 +65,12 @@ Locomotive.configure do |config|
   # config.rack_cache = false
   #
   # Note: by default, rack/cache is disabled in the Heroku platform
-
+  
+  # configure the search engine. Check out the ActiveSearch gem README to see which ones are available:
+  # https://github.com/Papipo/activesearch
+  # If you don't have any fulltext search engine available you might want to use the native mongoid solution
+  #
+  # config.search_engine = :mongoid
 end
+
+require 'locomotive/active_search'

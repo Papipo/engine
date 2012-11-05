@@ -32,10 +32,17 @@ Background:
     """
     
 Scenario: Searching in a single site
-  And I go to the homepage
+  When I go to the homepage
   And I fill in "Search" with "search"
   And I press "Search"
   Then I should see "Please search for this"
   And I should not see "This should never show up"
+  And I should not see "search results"
   When I follow "Please search for this"
   Then I should see "This is what you were looking for"
+  
+Scenario: Searching for 404 page
+  When I go to the homepage
+  And I fill in "Search" with "not found"
+  And I press "Search"
+  Then I should not see "Page not found"

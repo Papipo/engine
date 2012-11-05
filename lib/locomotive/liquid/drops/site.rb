@@ -14,7 +14,7 @@ module Locomotive
         end
         
         def search
-          @search ||= ActiveSearch.search(@context.registers[:controller].params[:search]).where('stored.site_id' => _source.id)
+          @search ||= ::ActiveSearch.search(@context.registers[:controller].params[:search]).where('_stored.site_id' => _source.id)
         end
 
       end
