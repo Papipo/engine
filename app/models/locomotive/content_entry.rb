@@ -37,7 +37,23 @@ module Locomotive
     alias :visible? :_visible?
     alias :_permalink :_slug
     alias :_permalink= :_slug=
-
+    
+    ## search ##
+    if Locomotive.config.search_engine
+      include Locomotive::Search
+      
+      search_by :options_for_search
+      
+      def options_for_search
+        store = [:_slug, _label_field_name, :site_id, :content_type_slug]
+        content_type.entries_custom_fields.where(searchable: true).map(&:name) << {store: store}
+      end
+      
+      def content_type_slug
+        content_type.slug
+      end
+    end
+    
     # Any content entry owns a label property which is used in the back-office UI
     # to represent it. The field used as the label is defined within the parent content type.
     #
@@ -69,7 +85,7 @@ module Locomotive
         true
       end
     end
-
+    
     # Return the locales the content entry has been translated to.
     #
     # @return [ Array ] The list of locales. Nil if not localized
@@ -204,6 +220,5 @@ module Locomotive
         Locomotive::Notifications.new_content_entry(account, self).deliver
       end
     end
-
   end
 end

@@ -29,9 +29,14 @@
     .type-input.col
       = g.select :type, options_for_custom_field_type, {}, { :class => 'type' }
 
-    .required-input.col
+    .boolean-input.col
       %span= t('.required')
       = g.check_box :required, :class => 'required'
+    
+    - if Locomotive.config.search_engine
+      .boolean-input.col
+        %span= t('.searchable')
+        = g.check_box :searchable, :class => 'searchable'
 
     %ol.nested{ :style => 'display: none' }
 

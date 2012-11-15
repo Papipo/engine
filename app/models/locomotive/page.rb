@@ -12,7 +12,7 @@ module Locomotive
     include Extensions::Page::Redirect
     include Extensions::Page::Listed
     include Extensions::Shared::Seo
-    include Locomotive::ActiveSearch::Engine
+    include Locomotive::Search if Locomotive.config.search_engine
 
     ## fields ##
     field :title,               :localize => true
@@ -57,7 +57,7 @@ module Locomotive
     scope :dependent_from,      lambda { |id| { :where => { :template_dependencies.in => [id] } } }
     
     ## search ##
-    search_by :title, store: [:title, :slug, :site_id], unless: :not_found?
+    search_by [:title, store: [:title, :slug, :site_id]], unless: :not_found? if Locomotive.config.search_engine
     
     ## methods ##
 

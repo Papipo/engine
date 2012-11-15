@@ -1,11 +1,10 @@
+require "activesearch/#{Locomotive.config.search_engine}"
+require "locomotive/active_search/#{Locomotive.config.search_engine}" rescue nil
+
 module Locomotive
-  module ActiveSearch
-  end
+  Search = ::ActiveSearch.const_get(self.config.search_engine.to_s.classify)
 end
 
-if Locomotive.config.search_engine
-  require "activesearch/#{Locomotive.config.search_engine}"
-  require "active_search/#{Locomotive.config.search_engine}"
-else
-  require "locomotive/active_search/engine"
+CustomFields::Field.class_eval do
+  field :searchable, type: Boolean, default: false
 end

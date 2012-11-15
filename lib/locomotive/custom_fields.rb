@@ -52,4 +52,3 @@ module CustomFields
 
   end
 end
-

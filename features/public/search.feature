@@ -5,7 +5,15 @@ Feature: Snippets
 
 Background:
   Given I have the site: "test site" set up
-  And a page named "Please search for this" with the template:
+  And I have a custom model named "Examples" with
+    | label       | type    | searchable   |
+    | Name        | string  | true         |
+    | Stuff       | text    | false        |
+  And I have entries for "Examples" with
+    | name           | stuff        |
+    | Findable entry | Some stuff   |
+    | Hidden         | Not findable |
+  And a page named "Please search for this findable page" with the template:
     """
       This is what you were looking for
     """
@@ -13,7 +21,12 @@ Background:
     """
       <ul>
       {% for result in site.search %}
-        <li><a href="{{result.slug}}">{{ result.title }}</a></li>
+        {{ result }}
+        {% if result.content_type_slug == 'examples' %}
+          <li><a href="/examples/{{result._slug}}">{{ result.name }}</a></li>
+        {% else %}
+          <li><a href="/{{result.slug}}">{{ result.title }}</a></li>
+        {% endif %}
       {% endfor %}
       </ul>
     """
@@ -26,18 +39,19 @@ Background:
       </form>
     """
   And I have the site: "another site" set up
-  And a page named "This should never show up in the search" in the site "Locomotive test website #2" with the body:
+  And a page named "This should never show up in the search, even if it would be findable" in the site "Locomotive test website #2" with the body:
     """
       Rickroll
     """
     
 Scenario: Searching in a single site
   When I go to the homepage
-  And I fill in "Search" with "search"
+  And I fill in "Search" with "findable"
   And I press "Search"
   Then I should see "Please search for this"
+  And I should see "Findable entry"
+  And I should not see "Hidden"
   And I should not see "This should never show up"
-  And I should not see "search results"
   When I follow "Please search for this"
   Then I should see "This is what you were looking for"
   

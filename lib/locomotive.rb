@@ -58,7 +58,9 @@ module Locomotive
 
     # add middlewares (dragonfly, font, seo, ...etc)
     self.add_middlewares
-
+    
+    self.configure_search
+    
     # Load all the dynamic classes (custom fields)
     begin
       ContentType.all.collect { |content_type| content_type.klass_with_custom_fields(:entries) }
@@ -90,6 +92,12 @@ module Locomotive
       raise '[Error] Locomotive needs a domain name when used as a multi sites platform' if domain_name.blank?
 
       self.config.domain = domain_name
+    end
+  end
+  
+  def self.configure_search
+    if self.config.search_engine
+      require "locomotive/active_search"
     end
   end
 

@@ -1,5 +1,3 @@
-Locomotive::ActiveSearch::Engine = ::ActiveSearch::Mongoid
-
 class ActiveSearch::Mongoid::Model
   def to_liquid
     _stored.inject({}) do |memo,(k,v)|

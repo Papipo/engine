@@ -83,5 +83,3 @@ Locomotive.configure do |config|
   #
   config.search_engine = :mongoid
 end
-
-require 'locomotive/active_search'

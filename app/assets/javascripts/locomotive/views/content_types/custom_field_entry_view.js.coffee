@@ -33,8 +33,8 @@ class Locomotive.Views.ContentTypes.CustomFieldEntryView extends Backbone.View
     return @
 
   enable_behaviours: ->
-    required_input = @$('.required-input input[type=checkbox]')
-    required_input.checkToggle(on_label: required_input.attr('data-on-label'), off_label: required_input.attr('data-off-label'))
+    boolean_input = @$('.boolean-input input[type=checkbox]')
+    boolean_input.checkToggle(on_label: boolean_input.attr('data-on-label'), off_label: boolean_input.attr('data-off-label'))
     @$('li.input.toggle input[type=checkbox]').checkToggle()
     @render_select_options_view()
 
